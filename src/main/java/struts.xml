@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="true" />
+
+    <package name="SrsSearch" extends="struts-default">
+        <default-action-ref name="SrsWelcome"/>
+        <action name="SrsWelcome">
+            <result>/jsp/Welcome.jsp</result>
+        </action>
+        <action name="config">
+            <result>/jsp/config.jsp</result>
+        </action>
+        <action name="publicationSearch" class="com.copyright.srsclient.web.Welcome" method="publicationSearch">
+            <result name="input">/jsp/Welcome.jsp</result>
+            <result>/jsp/PubSearch.jsp</result>
+        </action>
+        <action name="articleSearch" class="com.copyright.srsclient.web.Welcome" method="articleSearch">
+            <result name="input">/jsp/Welcome.jsp</result>
+            <result>/jsp/ArtSearch.jsp</result>
+        </action>
+        <action name="PubResultList" class="com.copyright.srsclient.web.actions.PubSearchAction">
+            <result name="input">/jsp/PubSearch.jsp</result>
+            <result name="SUCCESS">/jsp/PubResultList.jsp</result>
+            <result name="NO_RESULTS">/jsp/PubNoResults.jsp</result>
+        </action>
+        <action name="ArtResultList" class="com.copyright.srsclient.web.actions.ArtSearchAction">
+            <result name="input">/jsp/ArtSearch.jsp</result>
+            <result name="SUCCESS">/jsp/ArtResultList.jsp</result>
+            <result name="NO_RESULTS">/jsp/ArtNoResults.jsp</result>
+        </action>
+
+<!-- Add your actions here -->
+
+<!-- Page navigation for Publication Search -->
+
+        <action name="gotoNextPubPage" class="com.copyright.srsclient.web.actions.PubSearchAction" method="gotoNextPage">
+            <result name="SUCCESS">/jsp/PubResultList.jsp</result>
+        </action>   
+        <action name="gotoPrevPubPage" class="com.copyright.srsclient.web.actions.PubSearchAction" method="gotoPrevPage">
+            <result name="SUCCESS">/jsp/PubResultList.jsp</result>
+        </action>         
+
+        <action name="gotoFirstPubPage" class="com.copyright.srsclient.web.actions.PubSearchAction" method="gotoFirstPage">
+            <result name="SUCCESS">/jsp/PubResultList.jsp</result>
+        </action>         
+        <action name="gotoLastPubPage" class="com.copyright.srsclient.web.actions.PubSearchAction" method="gotoLastPage">
+            <result name="SUCCESS">/jsp/PubResultList.jsp</result>
+        </action>         
+
+<!-- Sorting for Publication Search -->
+
+        <action name="sortPubByRelevance" class="com.copyright.srsclient.web.actions.PubSearchAction" method="sortByRelevance">
+            <result name="SUCCESS">/jsp/PubResultList.jsp</result>
+        </action>
+                
+        <action name="sortPubByTitle" class="com.copyright.srsclient.web.actions.PubSearchAction" method="sortByTitle">
+            <result name="SUCCESS">/jsp/PubResultList.jsp</result>
+        </action>        
+        
+        <action name="sortPubByPublisher" class="com.copyright.srsclient.web.actions.PubSearchAction" method="sortByPublisher">
+            <result name="SUCCESS">/jsp/PubResultList.jsp</result>
+        </action>        
+        
+        <action name="sortPubByDate" class="com.copyright.srsclient.web.actions.PubSearchAction" method="sortByDate">
+            <result name="SUCCESS">/jsp/PubResultList.jsp</result>
+        </action>        
+
+        <action name="pubDetail" class="com.copyright.srsclient.web.actions.PubDetailAction">
+            <result name="SUCCESS">/jsp/PubDetail.jsp</result>
+        </action>        
+
+        <action name="returnToPubRL" class="com.copyright.srsclient.web.actions.PubDetailAction" method="returnToPubRL">
+            <result name="SUCCESS">/jsp/PubResultList.jsp</result>
+        </action>        
+
+        <action name="artSearchLaunch" class="com.copyright.srsclient.web.actions.ArtSearchLaunchAction">
+            <result name="SUCCESS">/jsp/ArtSearch.jsp</result>
+        </action>        
+
+        <action name="pubSearchLaunch" class="com.copyright.srsclient.web.actions.PubSearchLaunchAction">
+            <result name="SUCCESS">/jsp/PubResultList.jsp</result>
+            <result name="NO_RESULTS">/jsp/PubNoResults.jsp</result>
+        </action>        
+
+<!-- Page navigation for Article Search -->
+
+        <action name="gotoNextArtPage" class="com.copyright.srsclient.web.actions.ArtSearchAction" method="gotoNextPage">
+            <result name="SUCCESS">/jsp/ArtResultList.jsp</result>
+        </action>   
+        <action name="gotoPrevArtPage" class="com.copyright.srsclient.web.actions.ArtSearchAction" method="gotoPrevPage">
+            <result name="SUCCESS">/jsp/ArtResultList.jsp</result>
+        </action>         
+
+        <action name="gotoFirstArtPage" class="com.copyright.srsclient.web.actions.ArtSearchAction" method="gotoFirstPage">
+            <result name="SUCCESS">/jsp/ArtResultList.jsp</result>
+        </action>         
+        <action name="gotoLastArtPage" class="com.copyright.srsclient.web.actions.ArtSearchAction" method="gotoLastPage">
+            <result name="SUCCESS">/jsp/ArtResultList.jsp</result>
+        </action>         
+
+<!-- Sorting for Article Search -->
+
+        <action name="sortArtByRelevance" class="com.copyright.srsclient.web.actions.ArtSearchAction" method="sortByRelevance">
+            <result name="SUCCESS">/jsp/ArtResultList.jsp</result>
+        </action>
+                
+        <action name="sortArtByTitle" class="com.copyright.srsclient.web.actions.ArtSearchAction" method="sortByTitle">
+            <result name="SUCCESS">/jsp/ArtResultList.jsp</result>
+        </action>        
+        
+        <action name="sortArtByDate" class="com.copyright.srsclient.web.actions.ArtSearchAction" method="sortByDate">
+            <result name="SUCCESS">/jsp/ArtResultList.jsp</result>
+        </action>        
+
+        <action name="artDetail" class="com.copyright.srsclient.web.actions.ArtDetailAction">
+            <result name="SUCCESS">/jsp/ArtDetail.jsp</result>
+        </action>        
+
+        <action name="returnToRL" class="com.copyright.srsclient.web.actions.ArtDetailAction" method="returnToRL">
+            <result name="SUCCESS">/jsp/ArtResultList.jsp</result>
+        </action>
+                
+        <action name="suggest" class="com.copyright.srsclient.web.actions.AutoSuggestAction">
+            <result name="SUCCESS">/jsp/JsonData.jsp</result>
+        </action>
+        
+    </package>
+
+</struts>

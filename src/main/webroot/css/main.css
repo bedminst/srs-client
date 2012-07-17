@@ -1,0 +1,55 @@
+body {
+	margin: 0;
+	font: 12px verdana,arial;
+	text-align:center;
+}
+#global {
+	margin:5% auto;
+	padding:10px;
+	width:400px;
+	background:#f9f9f9;
+	border:1px solid #ccc;
+	text-align:left;
+}
+
+a.specialLink
+{
+  text-decoration: none;
+  color: blue;
+} 
+
+a.selected
+{
+  text-decoration: none;
+  font-weight: bold;   
+  color: blue;
+}
+
+.resultListText
+{
+	font-family: arial;
+	font-size: 6px;
+	color:grey;
+}
+
+.resultNumber
+{
+	font-family: arial;
+	font-size: 14px;
+    font-weight: bold;   
+	color:orange;
+}
+
+#silent
+{
+	padding:2px;
+	background:#D2D0DD;
+	border:1px solid #ccc;
+}
+
+#mainFrame {
+	background:#f9f9f9;
+	border:1px solid #ccc;
+	text-align:left;
+}
+

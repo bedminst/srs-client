@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="lib" path="N:/workspace/lib/container/jboss423/servlet-api.jar"/>
+	<classpathentry kind="lib" path="N:/workspace/lib/framework/struts-2.1.6/freemarker-2.3.13.jar"/>
+	<classpathentry kind="lib" path="N:/workspace/lib/framework/struts-2.1.6/struts2-core-2.1.6.jar"/>
+	<classpathentry kind="lib" path="N:/workspace/lib/framework/struts-2.1.6/xwork-2.1.2.jar"/>
+	<classpathentry kind="lib" path="N:/workspace/lib/framework/struts-2.1.6/ognl-2.6.11.jar"/>
+	<classpathentry kind="con" path="com.genuitec.eclipse.j2eedt.core.J2EE14_CONTAINER"/>
+	<classpathentry kind="lib" path="N:/workspace/lib/pool/1.0/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="N:/workspace/lib/pool/1.0/commons-fileupload-1.2.jar"/>
+	<classpathentry kind="lib" path="N:/workspace/lib/framework/spring-2.5.5/hessian-3.2.0.jar"/>
+	<classpathentry kind="lib" path="N:/workspace/lib/framework/spring-2.5.5/ibatis-2.3.2.715.jar"/>
+	<classpathentry kind="lib" path="N:/workspace/lib/framework/spring-2.5.5/spring-2.5.5.jar"/>
+	<classpathentry kind="lib" path="N:/builds/ccc-svc-common/build_latest_trunk/bin/jars/DEBUG/ccc-svc-common.jar"/>
+	<classpathentry kind="lib" path="N:/workspace/lib/pool/1.1/log4j-1.2.13.jar"/>
+	<classpathentry kind="lib" path="N:/workspace/lib/pool/1.0/commons-lang-2.2.jar"/>
+	<classpathentry kind="lib" path="N:/builds/ccc-base/build_latest_trunk/bin/jars/jdk6/DEBUG/ccc-base.jar" sourcepath="N:/builds/ccc-base/build_latest_trunk/src/java"/>
+	<classpathentry kind="lib" path="C:/workspace9-64/svc-searchRetrieval/out/jars/DEBUG/svc-searchRetrieval-client-undefined.jar"/>
+	<classpathentry kind="lib" path="N:/builds/ccc-app-integrity/build_latest_trunk/bin/jars/DEBUG/ccc-app-integrity.jar" sourcepath="N:/builds/ccc-app-integrity/build_latest_trunk/src"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="src/main/webroot/WEB-INF/classes"/>
+</classpath>

@@ -1,0 +1,290 @@
+<!--
+
+	Copyright 2009, Copyright Clearance Center.  All rights reserved.
+	
+	This build script is administered by the SCM Group at CCC.
+	It should be considered the reference build script for
+	the containing project, and consequently should not be
+	modified outside of the SCM group without prior approval.
+	
+	http://wiki.copyright.com/twiki/bin/view/Depts/ITG/SCMHomePage
+
+-->
+		
+<project name="srs-client" basedir="..">
+    
+	<!-- init properties -->
+	<property file="${ant.home}/master.properties" />
+	<property file="build/build.properties" />
+	<property name="ccc.ant.dist.key" value="0091" />
+    <property file="${ccc.build.framework.dir}/build-flavors.properties" />    
+	
+    <property name="build.number" value="undefined" />
+	
+	<property name="ccc.depend.container.version" value="jboss423,ojdbc6" />
+
+	<!-- import included build files -->
+
+	<import file="${ccc.build.framework.dir}/base-build.xml" />
+	<import file="${ccc.build.framework.dir}/depend.xml" />
+	<import file="${ccc.build.framework.dir}/analysis.xml" />
+	<import file="${ccc.build.framework.dir}/version.xml" />
+    <import file="${ccc.build.framework.dir}/template.xml" />
+
+	<tstamp/>
+
+    <!-- cas-upload task definitions -->
+    <import file="${ccc.build.framework.dir}/cas-upload.xml" />
+
+    <!-- upload init -->
+    <target name="upload-init"  depends="cas-init"/>
+
+    <!-- upload -->
+    <target name="upload"  depends="upload-init,push-to-cas"/>
+    
+	
+    <!-- target to incorporate templates -->
+    <target name="templateSubstitutions" depends="template.init">
+	<echo message="Performing Template Substitutions" />
+        <template.copy.one.all file="config/srs-client.properties.template">
+            <globmapper from="*.template" to="*" />
+        </template.copy.one.all>
+    </target>
+	
+    <!-- BUILD -->
+	
+	<target name="custom-init" depends="depend.init,svc.searchRetrieval.init,templateSubstitutions">
+		
+	    <path id="build.PROD.classpath" >
+	        <path refid="ccc.depend.pool.classpath" />
+	    	<path refid="ccc.depend.container.classpath" />
+	        <path refid="ccc.depend.framework.classpath" />
+	        <path refid="ccc.depend.cccbase.classpath" />
+	    	<path refid="ccc.depend.cccappintegrity.classpath" />
+	    	<path refid="ccc.depend.cccsvccommon.classpath" />
+	    	<fileset file="${svc.searchRetrieval.path}/PROD/svc-searchRetrieval-client-${svc.searchRetrieval.version}.jar" />
+			<fileset dir="lib" includes="*.jar" />
+	    </path>
+
+	    <path id="build.DEBUG.classpath" >
+	        <path refid="ccc.depend.pool.classpath" />
+	    	<path refid="ccc.depend.container.classpath" />
+	        <path refid="ccc.depend.framework.classpath" />
+	        <path refid="ccc.depend.cccbase.classpath" />
+	    	<path refid="ccc.depend.cccappintegrity.classpath" />
+	    	<path refid="ccc.depend.cccsvccommon.classpath" />
+	    	<fileset file="${svc.searchRetrieval.path}/DEBUG/svc-searchRetrieval-client-${svc.searchRetrieval.version}.jar" />
+			<fileset dir="lib" includes="*.jar" />
+	    </path>
+
+            <path id="api.classpath" refid="build.DEBUG.classpath" />
+
+	</target>
+	
+	<target name="svc.searchRetrieval.init">
+
+		<macro.svcPath
+			property="svc.searchRetrieval.path"
+			svc.name="searchRetrieval"
+			svc.version="${svc.searchRetrieval.version}"
+		/>
+		<echo message="svc-searchRetrieval path = ${svc.searchRetrieval.path}" />
+
+	</target>
+
+    <target name="build-impl" depends="build-all"
+            description="Builds all artifacts." />
+	
+	<target name="build-all" depends="before-build,war-all" />
+	
+	<target name="before-build" depends="init,make-output-dirs" />
+    
+	<target name="init" depends="custom-init,version" />
+	
+    <target name="make-output-dirs">
+        <mkdir dir="${ccc.build.classes.PROD.dir}" />
+        <mkdir dir="${ccc.build.classes.DEBUG.dir}" />
+        <mkdir dir="${ccc.build.wars.PROD.dir}" />
+        <mkdir dir="${ccc.build.wars.DEBUG.dir}" />
+    </target>
+        	
+	
+	<!-- PROD/DEBUG flavors defined per
+	  http://wiki.copyright.com/twiki/bin/view/Depts/ITG/ProdDebugFlavors
+	-->
+    <target name="compile" >
+
+			<if>
+				<not><isset property="local.build" /></not>
+				<then>
+
+    		<javac srcdir="${ccc.build.src.java.dir}"
+    			destdir="${ccc.build.classes.PROD.dir}"
+    			fork="yes"
+    			executable="${ccc.jdk6.home}/bin/javac.exe"
+    			debug="on"
+    			debuglevel="source,lines" >
+    			<classpath refid="build.PROD.classpath" />
+    			<compilerarg value="-Xlint:all,-path"/>
+    		</javac>
+
+				</then>
+			</if>
+    		
+    		<javac srcdir="${ccc.build.src.java.dir}"
+    			destdir="${ccc.build.classes.DEBUG.dir}"
+    			fork="yes"
+    			executable="${ccc.jdk6.home}/bin/javac.exe"
+    			debug="on">
+    			<classpath refid="build.DEBUG.classpath" />
+    			<compilerarg value="-Xlint:all,-path"/>
+    		</javac>
+
+    </target>
+	
+
+	<target name="pre-war"/>
+
+    <target name="war" depends="compile" >
+
+ 		<macro.war
+ 			war.name="${war.name}"
+ 			flavor="DEBUG"
+    	/>
+
+		<if>
+			<not><isset property="local.build" /></not>
+			<then>
+
+		<macro.war
+			war.name="${war.name}"
+			flavor="PROD"
+		/>    
+
+			</then>
+		</if>
+
+    </target>
+	
+    <target name="post-war" depends="analysis"/>
+	
+    <target name="analysis" depends="findbugs" />
+	
+	<target name="war-all" depends="pre-war,war,post-war" />
+		
+    <macrodef name="macro.war">
+    	<attribute name="war.name" />
+    	<attribute name="flavor" />
+    	<sequential>
+    		
+    		<version.gen.data.file
+    			path="${ccc.build.classes.dir}/@{flavor}"
+    			file="srs-client-versiondata.txt"
+    			unit.name="srs-client"
+    			version.number="1.0"
+    			build.flavor="@{flavor}"
+    			build.java.version="jdk6"
+    		/>
+
+    		<war destfile="${ccc.build.wars.dir}/@{flavor}/@{war.name}" webxml="${ccc.build.src.webroot.dir}/WEB-INF/web.xml" >
+    		
+    			<fileset dir="${ccc.build.src.webroot.dir}" excludes="WEB-INF/**" />
+    			<lib dir="${ccc.pool.lib.path}" includesfile="${custom.includesfile}"/>
+    			<lib dir="${ccc.framework.lib.root}/${ccc.depend.framework.version.spring}" includesfile="${custom.includesfile}"/>
+    			<lib dir="${ccc.framework.lib.root}/${ccc.depend.framework.version.struts}" includesfile="${custom.includesfile}"/>
+    			<lib file="${cccbase.path}/bin/jars/${ccc.depend.cccbase.compilertype}/@{flavor}/ccc-base.jar" />
+				<lib file="${cccappintegrity.path}/bin/jars/@{flavor}/ccc-app-integrity.jar" />
+            	<lib file="${cccsvccommon.path}/bin/jars/@{flavor}/ccc-svc-common.jar" />
+				<lib dir="${custom.includesdir}" includesfile="${custom.includesfile}" />
+            	<lib file="${svc.searchRetrieval.path}/@{flavor}/svc-searchRetrieval-client-${svc.searchRetrieval.version}.jar" />
+
+				<!-- Uncomment when/if srs-client uses Spring wiring
+				<webinf file="${ccc.build.src.webroot.dir}/WEB-INF/srs-client-context.xml"/>
+				-->
+				
+    			<webinf dir="${ccc.build.src.webroot.dir}/WEB-INF" excludes="web.xml, lib/DEBUG/**" />
+				  <classes dir="${ccc.build.src.java.dir}" excludes="**/*.java" />
+    			 
+				<classes dir="${ccc.build.classes.dir}/@{flavor}"/>
+   			
+				<manifest>
+					<section name="Build-Data">
+						<attribute name="Build-Number" value="${build.number}" />
+						<attribute name="Build-Flavor" value="@{flavor}" />
+						<attribute name="Build-Date" value="${TODAY}" />
+						<attribute name="Build-Time" value="${TSTAMP}" />
+						<attribute name="Built-By" value="${user.name}" />
+						<attribute name="Built-Using" value="${java.version}" />
+					</section>
+				</manifest>
+
+			</war>
+
+       	</sequential>
+    </macrodef>    
+
+
+	   
+    <!-- CLEANBUILD -->
+    
+    <target name="cleanbuild" depends="clean,custom-init,build" description="Cleans all output directories, then builds all artifacts." />
+    	
+	<target name="clean">
+        <delete dir="${ccc.build.classes.dir}" />
+        <delete dir="${ccc.build.wars.dir}" />
+        <delete dir="${ccc.build.tests.dir}" />
+        <delete dir="${ccc.build.test.reports.orig.dir}" />
+        <delete dir="${ccc.build.test.reports.xml.dir}" />
+        <delete dir="${ccc.build.test.reports.html.dir}" />
+    </target>
+
+
+    
+    <!-- PUBLISH -->
+    
+	<!-- need to call this from Luntbuild to get the init target called. -->
+	<target name="publish-me" depends="init,publish" />
+	
+    <!-- for luntbuild -->  
+    <!-- Luntbuild will always publish so as to ease diagnosis of build failures.  Therefore, copy failures must be tolerated. -->
+    <target name="publish-impl" depends="build-zip" if="luntbuild">
+
+        <copy todir="${artifacts.dir}" failonerror="false">
+            <fileset file="${ccc.build.basedir}/${zip.name}" />
+        </copy>
+		<copy todir="${artifacts.dir}/bin/wars/PROD" failonerror="false">
+    		<fileset dir="${ccc.build.wars.PROD.dir}" includes="*.war" />
+		</copy>
+		<copy todir="${artifacts.dir}/bin/wars/DEBUG" failonerror="false">
+			<fileset dir="${ccc.build.wars.DEBUG.dir}" includes="*.war" />
+		</copy>
+        <copy todir="${artifacts.dir}/config" failonerror="false">
+    		<fileset dir="${template.out.dir}" includes="**/*.properties" />
+        </copy>
+        
+    	<copy file="${findbugs.output}/findbugs-report.html" tofile="${findbugs.report.dir}/index.html" failonerror="false" />
+
+        <!-- CLOC: Publish lines of code -->
+	    <copy todir="${artifacts.dir}" failonerror="false">
+            <fileset file="out/cloc.csv" />
+        </copy>
+        
+    </target>
+    
+    <target name="build-zip">
+        <delete file="${ccc.build.basedir}/${zip.name}" />
+        <zip destfile="${ccc.build.basedir}/${zip.name}">
+            <zipfileset dir="${ccc.build.wars.PROD.dir}" prefix="bin/wars/PROD" />
+            <zipfileset dir="${ccc.build.wars.DEBUG.dir}" prefix="bin/wars/DEBUG" />
+            <zipfileset dir="${ccc.build.src.main.dir}" includes="**/*.java" prefix="src/java" />
+            <!-- re-enable once API build is running correctly
+            <zipfileset dir="${ccc.build.api}" includes="**/*.*" prefix="api" />
+            -->
+            <!-- Commented out as no templates are generated for srs-client
+            <zipfileset dir="${template.out.dir}" prefix="config" />
+            -->
+			<zipfileset dir="${template.out.dir}" includes="**/*.properties" prefix="config" />
+        </zip>
+    </target>
+
+</project>

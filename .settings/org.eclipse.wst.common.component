@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="srs-client">
+        <wb-resource deploy-path="/" source-path="/src/main/webroot"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <property name="context-root" value="/srs-client"/>
+        <property name="java-output-path" value="/srs-client/src/main/webroot/WEB-INF/classes"/>
+    </wb-module>
+</project-modules>

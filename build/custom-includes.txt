@@ -1,0 +1,15 @@
+# framework spring-2.5.5
+hessian-3.2.0.jar
+spring-2.5.5.jar
+
+# framework struts-2.1.6
+commons-fileupload-1.2.1.jar
+freemarker-2.3.13.jar
+ognl-2.6.11.jar
+struts2-core-2.1.6.jar
+xwork-2.1.2.jar
+
+# pool 1.5
+commons-lang-2.2.jar
+commons-logging.1.1.1.jar
+

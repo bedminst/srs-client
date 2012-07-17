@@ -1,0 +1,4 @@
+searchRetrieval_svc_endpoint=@searchRetrieval_svc_endpoint_base@/ws-searchRetrieval-1.3-008/searchRetrieve
+autosuggest_svc_endpoint=@autosuggest_svc_endpoint_base@/solr/autosuggest
+autosuggest_items=5
+autosuggest_count=3

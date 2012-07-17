@@ -1,0 +1,34 @@
+<project name="srs-client-local" basedir="..">
+
+	<property file="${ant.home}/master.properties" />
+	<property file="build/local-build.properties" />
+	<property name="local.build" value="true" />
+	<import file="build.xml" />
+
+		
+	<!-- override to use local version -->
+	<target name="svc.searchRetrieval.init">
+
+		<property name="svc.searchRetrieval.path" value="${local.svc.searchRetrieval.dir}/out/jars" />
+		<echo message="svc-searchRetrieval path = ${svc.searchRetrieval.path}" />
+
+	</target>
+	
+	<!-- override to implement -->
+	<target name="local-deploy-impl">
+
+    	<copy todir="${local.server.deploy.dir}">
+         	<fileset file="${ccc.build.wars.DEBUG.dir}/${war.name}" />
+        </copy>
+
+    	<copy todir="${local.server.conf.dir}">
+			<fileset file="config/srs-client.properties" />
+        </copy>
+
+	</target>
+
+	<!-- override some targets to suppress -->
+	<!-- target name="analysis" /-->
+	<target name="test" />
+
+</project>

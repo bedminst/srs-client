@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="srs-client"
+  id="myeclipse.1265146523778"
+  context-root="/srs-client"
+  j2ee-spec="1.4"
+  archive="srs-client.war">
+  <attributes>
+    <attribute name="webrootdir" value="/src/main/webroot" />
+  </attributes>
+</project-module>
+
